@@ -1,7 +1,7 @@
 const client_id = "8982911bb26f4732b6fc7012fa25460c";
 const response_type = "token";
 const redirect_uri =
-  "https://ceomfoljogbanppabhfmifkcjcckcobm.chromiumapp.org/success";
+  "https://njeklmcpajnlhfbnlokoihegcgimoojg.chromiumapp.org/success";
 const scope = "user-library-modify";
 let authorizationUrl = `https://accounts.spotify.com/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=${scope}&response_type=${response_type}`;
 
@@ -10,22 +10,47 @@ const mainBtn = document.getElementById("main_btn");
 const searchResults = document.getElementById("search_results");
 
 function updateMainBtn() {
-  mainBtn.textContent = "Save Track";
+  if(mainBtn.textContent === 'Login'){
+    mainBtn.textContent = "Save Track";
+    header.textContent = 'Save currently playing track to Spotify';
+  }
+  
 }
 
-function populateSearchResults(list, res){
-  res.tracks.items.forEach(track => {
+function populateSearchResults(list, res) {
+  res.tracks.items.forEach((track) => {
     let li = document.createElement("li");
-    let trackBtn = document.createElement('button');
+    let trackBtn = document.createElement("button");
 
     trackBtn.textContent = track.name;
+    trackBtn.id = track.id;
+    trackBtn.addEventListener("click", saveTrackToSpotify);
 
     li.appendChild(trackBtn);
     list.appendChild(li);
   });
 
-  mainBtn.style.display = 'none';
-  header.textContent = 'Click on a track to Save it to Spotify';
+  mainBtn.style.display = "none";
+  header.textContent = "Click on a track to Save it to Spotify";
+}
+
+function saveTrackToSpotify(e) {
+  let trackId = e.path[0].id;
+
+  let options = {
+    url: "https://api.spotify.com/v1/me/tracks?ids=" + trackId,
+    headers: {
+      Authorization: "Bearer " + access_token,
+    },
+    json: true,
+  };
+
+  fetch(options.url, {
+    headers: options.headers,
+    method: "PUT",
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
 }
 
 mainBtn.onclick = () => {
