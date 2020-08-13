@@ -1,0 +1,32 @@
+html{
+    height: 200px;
+    width: 200px;
+    background: #191414;
+    border: 2px solid black;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#main_btn{
+    height: 30px;
+    border: 0;
+    margin-bottom: 10px;
+    background-color: #1DB954;
+}
+
+#search_results{
+    list-style-type: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+li{
+    margin-top: 5px;
+}
+
+#header{
+    text-align: center;
+    color: #FFFFFF;
+}
