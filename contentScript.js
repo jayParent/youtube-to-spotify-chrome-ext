@@ -1,7 +1,4 @@
-window.onload = getTrackTitle();
-
-function getTrackTitle() {
-  var videoTitle = document.getElementsByClassName("title")[0].innerText;
+var videoTitle = document.getElementsByClassName("title")[0].innerText;
 
   if (videoTitle.includes("-")) {
     var trackTitle = videoTitle.split("-");
@@ -12,4 +9,3 @@ function getTrackTitle() {
 
   chrome.runtime
     .sendMessage({ firstHalf: firstHalf, secondHalf: secondHalf })
-}

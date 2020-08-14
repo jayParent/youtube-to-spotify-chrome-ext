@@ -59,6 +59,7 @@ chrome.browserAction.onClicked.addListener(() => {
     fetch(options.url, { headers: options.headers })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         if (res.tracks.items.length > 0) {
           let trackId = res.tracks.items[0].id;
           saveTrackToSpotify(trackId);
