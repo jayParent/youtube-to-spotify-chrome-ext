@@ -10,6 +10,5 @@ function saveTrackToSpotify(trackId) {
   fetch(options.url, {
     headers: options.headers,
     method: "PUT",
-  })
-    .catch((err) => console.log(err));
+  }).catch((err) => console.log(err));
 }
