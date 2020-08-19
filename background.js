@@ -50,10 +50,11 @@ chrome.browserAction.onClicked.addListener(() => {
     let query2 = request.firstHalf;
 
     let options = {
-      url: `https://api.spotify.com/v1/search?q=${query1}&type=track&market=US&limit=50&offset=0`,
+      url: `https://api.spotify.com/v1/search?q=${query1}+${query2}&type=track,artist&market=US&limit=50&offset=0`,
       headers: { Authorization: 'Bearer ' + access_token },
       json: true,
     };
+    console.log(options.url);
 
     fetch(options.url, { headers: options.headers })
       .then((res) => res.json())
