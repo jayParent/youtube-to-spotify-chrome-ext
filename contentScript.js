@@ -1,20 +1,19 @@
-var videoTitle = document.getElementsByClassName('title')[0].innerText.toLowerCase();
-var paran = videoTitle.slice(videoTitle.indexOf('('), videoTitle.indexOf(')') + 1);
-console.log(paran);
+var videoTitle = document.getElementsByClassName('title')[0].innerText.toLowerCase().replace('&', 'and');
+var inParantheses = videoTitle.slice(videoTitle.indexOf('('), videoTitle.indexOf(')') + 1);
+var inBrackets = videoTitle.slice(videoTitle.indexOf('['), videoTitle.indexOf(']') + 1);
 
-paran.toLowerCase().includes('video') ? (videoTitle = videoTitle.replace(paran, '')) : (videoTitle = videoTitle);
+var titleSeparatorIndex = videoTitle.lastIndexOf('-');
+var artistName = videoTitle.slice(0, titleSeparatorIndex - 1).trim();
 
+if(videoTitle.includes('ft.') || videoTitle.includes('feat')){
+  let featIndex = videoTitle.lastIndexOf('feat.');
+  let featuring = videoTitle.substring(featIndex, titleSeparatorIndex);
+  videoTitle = videoTitle.replace(featuring, '');
+}
+console.log(`artistName: ${artistName}`);
+
+videoTitle = videoTitle.replace(inParantheses, '').replace(inBrackets, '').replace(/-/g, '').trim().replace(/\s+/g, '+');
 console.log(`videoTitle: ${videoTitle}`);
 
-if (videoTitle.includes('-')) {
-  var trackTitle = videoTitle.split('-');
-  console.log(trackTitle);
-  var firstHalf = trackTitle[0].trim().toLowerCase();
-  var secondHalf = trackTitle[1].trim().toLowerCase();
+chrome.runtime.sendMessage({ videoTitle: videoTitle, artistName: artistName });
 
-  console.log(`${firstHalf} ${secondHalf}`);
-
-  chrome.runtime.sendMessage({ firstHalf: firstHalf, secondHalf: secondHalf });
-} else {
-  chrome.runtime.sendMessage({ videoTitle: videoTitle });
-}

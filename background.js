@@ -46,11 +46,11 @@ chrome.browserAction.onClicked.addListener(() => {
   });
 
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    let query1 = request.secondHalf;
-    let query2 = request.firstHalf;
+    let query = request.videoTitle;
+    let artistName = request.artistName;
 
     let options = {
-      url: `https://api.spotify.com/v1/search?q=${query1}+${query2}&type=track,artist&market=US&limit=50&offset=0`,
+      url: `https://api.spotify.com/v1/search?q=${query}&type=track&market=US&limit=50&offset=0`,
       headers: { Authorization: 'Bearer ' + access_token },
       json: true,
     };
@@ -63,18 +63,23 @@ chrome.browserAction.onClicked.addListener(() => {
         let noSavedTrack = true;
         res.tracks.items.forEach((track) => {
           track.artists.forEach((artist) => {
-            console.log(artist.name.toLowerCase(), query2);
-            if (artist.name.toLowerCase() === query2 && noSavedTrack) {
+            console.log(artist.name.toLowerCase(), artistName);
+            if (artist.name.toLowerCase() === artistName && noSavedTrack) {
               saveTrackToSpotify(track.id);
               noSavedTrack = false;
             }
           });
         });
+        if(noSavedTrack){
+          try{
+            let trackId = res.tracks.items[0].id;
+            saveTrackToSpotify(trackId);
+          }catch{
+            console.log('Could not find a match.');
+          }
+          
+        }
       })
       .catch((err) => console.log(err));
   });
 });
-
-// 1. search for tracks on spotify with query1 (secondHalf)
-// 2. loop through results object, if item.artists.includes(firstHalf = artist). Means we have right track name and right artist => save track
-//                                 else fetch with queries reversed and do the same
