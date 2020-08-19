@@ -1,6 +1,6 @@
 {
     "name": "Youtube => Spotify",
-    "version": "1.0",
+    "version": "0.0.0.1",
     "description": "Save youtube tracks to spotify. Create Spotify playlist with youtube track list.",
     "permissions": ["identity", "activeTab", "declarativeContent", "storage"],
     "background": {
