@@ -1,14 +1,28 @@
 function saveTrackToSpotify(trackId) {
   let options = {
-    url: "https://api.spotify.com/v1/me/tracks?ids=" + trackId,
+    url: 'https://api.spotify.com/v1/me/tracks?ids=' + trackId,
     headers: {
-      Authorization: "Bearer " + access_token,
+      Authorization: 'Bearer ' + access_token,
     },
     json: true,
   };
 
   fetch(options.url, {
     headers: options.headers,
-    method: "PUT",
-  }).catch((err) => console.log(err));
+    method: 'PUT',
+  })
+  .then((res) => {
+    console.log(res);
+    if(res.ok){
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {status: "sucess"});
+      });
+    }else{
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {status: "failed"});
+      });
+    }
+    
+  })
+  .catch((err) => console.log(err));
 }
