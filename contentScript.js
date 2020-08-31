@@ -1,36 +1,42 @@
 var saveBtn = createSaveBtn();
 var container = document.querySelector('#info-contents #container #info');
 var saveBtnElement = document.getElementById('save_track_btn');
-if(!container.contains(saveBtnElement)){
+
+if (!container.contains(saveBtnElement)) {
   container.appendChild(saveBtn);
 }
 
-var trackInfo = getTrackInfo();
-saveBtn.addEventListener('click', sendTrackInfo);
+saveBtn.addEventListener('click', sendSaveMessage);
 
-function getTrackInfo() {
-  var videoTitle = document.getElementsByClassName('title')[0].innerText.toLowerCase().replace('&', 'and');
-  var inParantheses = videoTitle.slice(videoTitle.indexOf('('), videoTitle.indexOf(')') + 1);
-  var inBrackets = videoTitle.slice(videoTitle.indexOf('['), videoTitle.indexOf(']') + 1);
+// function getTrackInfo() {
+//   var videoTitle = document.getElementsByClassName('title')[0].innerText.toLowerCase().replace('&', 'and');
 
-  var titleSeparatorIndex = videoTitle.lastIndexOf('-');
-  var artistName = videoTitle.slice(0, titleSeparatorIndex - 1).trim();
+//   var inParantheses = videoTitle.slice(videoTitle.indexOf('('), videoTitle.indexOf(')') + 1);
+//   var inBrackets = videoTitle.slice(videoTitle.indexOf('['), videoTitle.indexOf(']') + 1);
 
-  if (videoTitle.includes('ft.') || videoTitle.includes('feat')) {
-    let featIndex = videoTitle.lastIndexOf('feat.');
-    let featuring = videoTitle.substring(featIndex, titleSeparatorIndex);
-    videoTitle = videoTitle.replace(featuring, '');
-  }
+//   if (videoTitle.includes('-')) {
+//     var titleSeparatorIndex = videoTitle.lastIndexOf('-');
+//     var artistName = videoTitle.slice(0, titleSeparatorIndex - 1).trim();
+//   } else {
+//     artistName = '';
+//   }
 
-  videoTitle = videoTitle
-    .replace(inParantheses, '')
-    .replace(inBrackets, '')
-    .replace(/-/g, '')
-    .trim()
-    .replace(/\s+/g, '+');
+//   if (videoTitle.includes('ft.') || videoTitle.includes('feat')) {
+//     let featIndex = videoTitle.lastIndexOf('feat.');
+//     let featuring = videoTitle.substring(featIndex, titleSeparatorIndex);
+//     videoTitle = videoTitle.replace(featuring, '');
+//   }
 
-  return { artist: artistName, title: videoTitle };
-}
+//   videoTitle = videoTitle
+//     .replace(inParantheses, '')
+//     .replace(inBrackets, '')
+//     .replace(/-/g, '')
+//     .trim()
+//     .replace(/\s+/g, '+');
+
+//   let trackInfo = { artist: artistName, title: videoTitle };
+//   sendTrackInfo(trackInfo);
+// }
 
 function createSaveBtn() {
   let btn = document.createElement('button');
@@ -49,16 +55,16 @@ function createSaveBtn() {
   return btn;
 }
 
-function sendTrackInfo() {
-  console.log(trackInfo);
+function sendSaveMessage() {
   chrome.runtime.sendMessage({
-    message: 'saveTrack',
-    artistName: trackInfo.artist,
-    videoTitle: trackInfo.title,
+    message: 'saveTrack'
   });
 }
 
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    request.status === "sucess" ? console.log('Track Saved Sucessfully!'): console.log('Failed to Save Track');
-  });
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  // request.status === 'sucess' ? console.log('Track Saved Sucessfully!') : console.log('Failed to Save Track');
+  if(request.message === 'reloadPage'){
+    console.log('message received');
+    location.reload();
+  }
+});

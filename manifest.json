@@ -1,12 +1,12 @@
 {
-    "name": "Youtube => Spotify",
-    "version": "0.0.0.1",
-    "description": "Save youtube tracks to spotify. Create Spotify playlist with youtube track list.",
-    "permissions": ["identity", "tabs", "declarativeContent", "storage", "https://www.youtube.com/*"],
-    "background": {
-      "scripts": ["background.js", "scripts.js"],
-      "persistent": true
-    },
-    "browser_action": {},
-    "manifest_version": 2
-  }
+  "name": "Youtube => Spotify",
+  "version": "0.0.0.1",
+  "description": "Save youtube tracks to spotify. Create Spotify playlist with youtube track list.",
+  "permissions": ["identity", "tabs", "declarativeContent", "storage", "https://www.youtube.com/*"],
+  "background": {
+    "scripts": ["background.js", "scripts.js"],
+    "persistent": true
+  },
+  "browser_action": {},
+  "manifest_version": 2
+}
